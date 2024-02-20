@@ -1,0 +1,11 @@
+{
+  "name": "ocean-jornada-backend-fevereiro-2024",
+  "version": "1.0.0",
+  "description": "Projeto com Node.js e Express feito para a jornada backend do Samsung Ocean em fevereiro de 2024",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Renan Souza",
+  "license": "ISC"
+}
