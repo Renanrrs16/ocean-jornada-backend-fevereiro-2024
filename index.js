@@ -16,4 +16,14 @@ app.get('/oi', function (req, res) {
     res.send(lista)
   })
 
+  // Read by id -> [GET] /item/:id
+  app.get('/item/:id', function(req,res){
+    // acesso o ID no parametro de rota
+    const id = req.params.id
+    // acesso item na lista baseado no id recebido
+    const item = lista[id]
+    // envio o item obtido com resposta HTTP
+    res.send(item)
+  })
+
 app.listen(3000)
