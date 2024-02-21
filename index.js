@@ -26,4 +26,18 @@ app.get('/oi', function (req, res) {
     res.send(item)
   })
 
+  app.use(express.json())
+
+  //Creat -> [POST]/item
+  app.post('/item', function(req, res){
+    // extraimos o corpo da requisicao
+    const body = req.body
+    // pegamos o nome (string) que foi enviado dentro do corpo
+    const item =body.nome
+    // colocamos o nome dentro da lista de itens
+    lista.push(item)
+    //Enviamos uma resposta com sucesso
+    res.send('item adicionado com sucesso!')
+  })
+
 app.listen(3000)
