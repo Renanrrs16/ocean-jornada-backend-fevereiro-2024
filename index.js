@@ -1,23 +1,41 @@
 const express = require('express')
-const app = express()
+const { MongoClient } = require('mongodb')
 
-app.get('/', function (req, res) {
-  res.send('Hello Worldddd')
-})
+const dbUrl = 'mongodb+srv://admin:jLN5luYeIfBnpLyd@cluster0.o3f6ekr.mongodb.net'
+const dbName = 'OceanJornadaBackendFev2024'
 
-app.get('/oi', function (req, res) {
+async function main() {
+  const client = new MongoClient(dbUrl)
+
+  console.log('Conectando ao banco de dados...')
+  await client.connect()
+  console.log('Banco de dados conectado com sucesso!')
+
+  const app = express()
+
+  app.get('/', function (req, res) {
+    res.send('Hello World')
+  })
+
+  app.get('/oi', function (req, res) {
     res.send('Ola mundo')
   })
   // Lista de Personagens
-  const lista = ['Rick Sanches','Morty Smith', 'Summer Smith']
-  
+  const lista = ['Rick Sanches', 'Morty Smith', 'Summer Smith']
+
+  const db = client.db(dbName)
+  const collection = db.collection('items')
+
   //Read all -> [Get]/item
-  app.get('/item', function(req, res){
-    res.send(lista)
+  app.get('/item', async function (req, res) {
+    // Realizamos a operacao de find na colection do mongdb
+    const items = await collection.find().toArray()
+    // Envio todos os documentos como resposta HTTP
+    res.send(items)
   })
 
   // Read by id -> [GET] /item/:id
-  app.get('/item/:id', function(req,res){
+  app.get('/item/:id', function (req, res) {
     // acesso o ID no parametro de rota
     const id = req.params.id
     // acesso item na lista baseado no id recebido
@@ -29,15 +47,18 @@ app.get('/oi', function (req, res) {
   app.use(express.json())
 
   //Creat -> [POST]/item
-  app.post('/item', function(req, res){
+  app.post('/item', function (req, res) {
     // extraimos o corpo da requisicao
     const body = req.body
     // pegamos o nome (string) que foi enviado dentro do corpo
-    const item =body.nome
+    const item = body.nome
     // colocamos o nome dentro da lista de itens
     lista.push(item)
     //Enviamos uma resposta com sucesso
     res.send('item adicionado com sucesso!')
   })
 
-app.listen(3000)
+  app.listen(3000)
+}
+
+main()
