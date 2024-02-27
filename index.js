@@ -28,6 +28,8 @@ async function main() {
 
   //Read all -> [Get]/item
   app.get('/item', async function (req, res) {
+    // Envio a lista inteira como resposta HTTP
+    res.send(lista)
     // Realizamos a operacao de find na colection do mongdb
     const items = await collection.find().toArray()
     // Envio todos os documentos como resposta HTTP
