@@ -1,5 +1,5 @@
 const express = require('express')
-const { MongoClient } = require('mongodb')
+const { MongoClient, ObjectId } = require('mongodb')
 
 const dbUrl = 'mongodb+srv://admin:jLN5luYeIfBnpLyd@cluster0.o3f6ekr.mongodb.net'
 const dbName = 'OceanJornadaBackendFev2024'
@@ -28,20 +28,24 @@ async function main() {
 
   //Read all -> [Get]/item
   app.get('/item', async function (req, res) {
-    // Envio a lista inteira como resposta HTTP
-    res.send(lista)
+
     // Realizamos a operacao de find na colection do mongdb
     const items = await collection.find().toArray()
+
     // Envio todos os documentos como resposta HTTP
     res.send(items)
   })
 
   // Read by id -> [GET] /item/:id
-  app.get('/item/:id', function (req, res) {
+  app.get('/item/:id', async function (req, res) {
     // acesso o ID no parametro de rota
     const id = req.params.id
-    // acesso item na lista baseado no id recebido
-    const item = lista[id]
+
+    // acesso item na collection baseado no id recebido
+    const item = await collection.findOne({
+      _id: new ObjectId(id)
+    })
+
     // envio o item obtido com resposta HTTP
     res.send(item)
   })
