@@ -2,7 +2,7 @@ const express = require('express')
 const { MongoClient, ObjectId } = require('mongodb')
 
 const dbUrl = 'mongodb+srv://admin:jLN5luYeIfBnpLyd@cluster0.o3f6ekr.mongodb.net'
-const dbName = 'OceanJornadaBackendFev2024'
+const dbName = 'Ocean-Jornada-Backend-Fev2024'
 
 async function main() {
   const client = new MongoClient(dbUrl)
@@ -53,15 +53,16 @@ async function main() {
   app.use(express.json())
 
   //Creat -> [POST]/item
-  app.post('/item', function (req, res) {
+  app.post('/item', async function (req, res) {
     // extraimos o corpo da requisicao
-    const body = req.body
-    // pegamos o nome (string) que foi enviado dentro do corpo
-    const item = body.nome
-    // colocamos o nome dentro da lista de itens
-    lista.push(item)
+    const item = req.body
+
+
+    // colocamos o item dentro da collection de itens
+    await collection.insertOne(item)
+
     //Enviamos uma resposta com sucesso
-    res.send('item adicionado com sucesso!')
+    res.send(item)
   })
 
   app.listen(3000)
